@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package types;
+
+import "types/document/doc.proto";
+
+message TermQuery {
+  Keyword Keyword = 1;    //Keyword类型引用自doc.proto
+  repeated TermQuery Must = 2;
+  repeated TermQuery Should = 3;
+}
+
+// protoc -I=C:/Users/jmh00/GolandProjects/criker-search --gogofaster_out=./types/term_query --proto_path=./types/term_query term_query.proto
+// 在windows上-I需使用绝对路径
