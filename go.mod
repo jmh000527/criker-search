@@ -8,4 +8,9 @@ require (
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842
 )
 
-require github.com/gogo/protobuf v1.3.2
+require (
+	github.com/gogo/protobuf v1.3.2
+	go.etcd.io/bbolt v1.3.10
+)
+
+require golang.org/x/sys v0.4.0 // indirect
