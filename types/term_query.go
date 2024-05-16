@@ -27,6 +27,10 @@ func (q *TermQuery) And(queries ...*TermQuery) *TermQuery {
 			array = append(array, ele)
 		}
 	}
+	// 如果所有的 query 都为空，直接返回当前对象 q
+	if len(array) == 0 {
+		return q
+	}
 	return &TermQuery{Must: array} //TermQuery的一级成员里只有Must非空，Keyword和Should都为空
 }
 
@@ -43,6 +47,10 @@ func (q *TermQuery) Or(queries ...*TermQuery) *TermQuery {
 		if !ele.Empty() {
 			array = append(array, ele)
 		}
+	}
+	// 如果所有的 query 都为空，直接返回当前对象 q
+	if len(array) == 0 {
+		return q
 	}
 	return &TermQuery{Should: array} //TermQuery的一级成员里只有Should非空，Must和Keyword都为空
 }
