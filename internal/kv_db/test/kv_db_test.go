@@ -1,14 +1,14 @@
 package test
 
 import (
-	kv_db "criker-search/internal/interface"
+	_interface "criker-search/internal/interface"
 	"errors"
 	"fmt"
 	"testing"
 )
 
 var (
-	db       kv_db.KeyValueDB
+	db       _interface.KeyValueDB
 	setup    func() // 测试之前执行一些初始化工作
 	teardown func() // 测试之后执行一些收尾工作
 )
@@ -19,11 +19,11 @@ func init() {
 	}
 }
 
-func testGetDbPath(db kv_db.KeyValueDB) {
+func testGetDbPath(db _interface.KeyValueDB) {
 	fmt.Println("DbPath: ", db.GetDbPath())
 }
 
-func testGetSetDelete(db kv_db.KeyValueDB) error {
+func testGetSetDelete(db _interface.KeyValueDB) error {
 	k1 := []byte("k1")
 	v1 := []byte("v1")
 	k2 := []byte("k2")
@@ -78,7 +78,7 @@ func testGetSetDelete(db kv_db.KeyValueDB) error {
 	return nil
 }
 
-func testBatchGetSetDelete(db kv_db.KeyValueDB) error {
+func testBatchGetSetDelete(db _interface.KeyValueDB) error {
 	k1 := []byte("k1")
 	v1 := []byte("v1")
 	k2 := []byte("k2")
@@ -124,7 +124,7 @@ func testBatchGetSetDelete(db kv_db.KeyValueDB) error {
 	return nil
 }
 
-func testIterDB(db kv_db.KeyValueDB) error {
+func testIterDB(db _interface.KeyValueDB) error {
 	k1 := []byte("k1")
 	v1 := []byte("v1")
 	k2 := []byte("k2")
