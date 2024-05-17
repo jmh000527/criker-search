@@ -68,7 +68,7 @@ func (indexer *SkipListInvertedIndexer) Delete(keyword *types.Keyword, IntId uin
 	}
 }
 
-// Search 搜索，返回docId
+// Search 搜索，返回docId（业务侧ID）
 func (indexer *SkipListInvertedIndexer) Search(query *types.TermQuery, onFlag uint64, offFlag uint64, orFlags []uint64) []string {
 	result := indexer.search(query, onFlag, offFlag, orFlags)
 	if result == nil {

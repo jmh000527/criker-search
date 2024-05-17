@@ -1,7 +1,7 @@
 package test
 
 import (
-	kv_db "criker-search/internal/kv_db/interface"
+	kv_db "criker-search/internal/interface"
 	"errors"
 	"fmt"
 	"testing"
