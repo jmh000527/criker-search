@@ -13,8 +13,8 @@ const (
 	BADGER
 )
 
-// IKeyValueDB redis也是一种KV数据库，读者可以自行用redis实现IKeyValueDB接口
-type IKeyValueDB interface {
+// KeyValueDB k-v数据库接口
+type KeyValueDB interface {
 	Open() error                                      // 初始化DB
 	GetDbPath() string                                // 获取存储数据的目录
 	Set(k, v []byte) error                            // 写入<key, value>
@@ -31,7 +31,7 @@ type IKeyValueDB interface {
 
 // GetKvDB Factory工厂模式，把类的创建和使用分隔开
 // Get函数就是一个工厂，它返回产品的接口，即它可以返回各种各样的具体产品。
-func GetKvDB(dbType int, path string) (IKeyValueDB, error) {
+func GetKvDB(dbType int, path string) (KeyValueDB, error) {
 	paths := strings.Split(path, "/")
 	parentPath := strings.Join(paths[0:len(paths)-1], "/") //父路径
 	stat, err := os.Stat(parentPath)
@@ -57,10 +57,10 @@ func GetKvDB(dbType int, path string) (IKeyValueDB, error) {
 		}
 	}
 
-	var db IKeyValueDB
+	var db KeyValueDB
 	switch dbType {
 	case BADGER:
-		//db = new(Badger).WithDataPath(path)
+		db = new(kv_db.Badger).WithDataPath(path)
 	default:
 		// 默认使用Bolt，Builder生成器模式
 		db = new(kv_db.Bolt).WithDataPath(path).WithBucket("radic")
