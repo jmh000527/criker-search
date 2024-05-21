@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// HubProxy 代理模式。对ServiceHub做一层代理，想访问endpoints时需要通过代理。代理提供了2个功能：缓存和限流保护
+// HubProxy 代理模式，实现了ServiceHub接口。对ServiceHub做一层代理，想访问endpoints时需要通过代理。代理提供了2个功能：缓存和限流保护
 type HubProxy struct {
 	*EtcdServiceHub               // 指向ServiceHub实例
 	endpointCache   sync.Map      // 维护每一个service下的所有servers

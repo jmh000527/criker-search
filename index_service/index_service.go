@@ -15,8 +15,8 @@ const (
 
 // IndexServiceWorker 一个grpc server
 type IndexServiceWorker struct {
-	Indexer  *Indexer        // 把正排和倒排索引放到一起
-	hub      *EtcdServiceHub // 服务注册相关的配置
+	Indexer  *Indexer   // 把正排和倒排索引放到一起
+	hub      ServiceHub // 服务注册相关的配置
 	selfAddr string
 }
 
