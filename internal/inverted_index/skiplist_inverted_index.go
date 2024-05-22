@@ -50,7 +50,7 @@ func (indexer *SkipListInvertedIndexer) Add(doc types.Document) {
 			list := skiplist.New(skiplist.Uint64)
 			list.Set(doc.IntId, skipListValue)
 			// 并发安全
-			indexer.table.Set(key, &list)
+			indexer.table.Set(key, list)
 		}
 		lock.Unlock()
 	}
