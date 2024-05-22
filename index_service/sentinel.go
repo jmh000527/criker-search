@@ -2,6 +2,7 @@ package index_service
 
 import (
 	"context"
+	indexservice "criker-search/index_service/interface"
 	"criker-search/types"
 	"criker-search/utils"
 	"fmt"
@@ -15,8 +16,8 @@ import (
 
 // Sentinel 哨兵前台，与外部对接
 type Sentinel struct {
-	hub      ServiceHub // 从Hub上获取IndexServiceWorker集合。可能是直接访问ServiceHub，也可能是走代理
-	connPool sync.Map   // 与各个IndexServiceWorker建立的gRPC连接。把连接缓存起来，避免每次都重建连接
+	hub      indexservice.ServiceHub // 从Hub上获取IndexServiceWorker集合。可能是直接访问ServiceHub，也可能是走代理
+	connPool sync.Map                // 与各个IndexServiceWorker建立的gRPC连接。把连接缓存起来，避免每次都重建连接
 }
 
 func NewSentinel(etcdServers []string) *Sentinel {
@@ -35,7 +36,7 @@ func (sentinel *Sentinel) GetGrpcConn(endpoint string) *grpc.ClientConn {
 		conn := v.(*grpc.ClientConn)
 		// 如果连接状态不可用，则从连接缓存中删除
 		if conn.GetState() == connectivity.TransientFailure || conn.GetState() == connectivity.Shutdown {
-			utils.Log.Printf("connnection status to endpoint %s is %s", endpoint, conn.GetState().String())
+			utils.Log.Printf("connection status to endpoint %s is %s", endpoint, conn.GetState().String())
 			conn.Close()
 			sentinel.connPool.Delete(endpoint)
 		} else {
