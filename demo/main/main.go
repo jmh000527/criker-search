@@ -56,10 +56,12 @@ func main() {
 
 	switch *mode {
 	case 1, 3:
-		WebServerMain(*mode) //1：单机模式，索引功能嵌套在web server内部。3：分布式模式，web server内持有一个哨兵，通过哨兵去访问各个grpc index server
+		// 1：单机模式，索引功能嵌套在web server内部。3：分布式模式，web server内持有一个哨兵，通过哨兵去访问各个grpc index server
+		WebServerMain(*mode)
 		StartGin()
 	case 2:
-		//GrpcIndexerMain() // 以grpc server的方式启动索引服务
+		// 以grpc server的方式启动索引服务IndexWorker
+		GrpcIndexerMain()
 	}
 }
 

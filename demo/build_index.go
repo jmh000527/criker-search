@@ -6,6 +6,7 @@ import (
 	"criker-search/utils"
 	"encoding/csv"
 	"github.com/gogo/protobuf/proto"
+	farmhash "github.com/leemcloughlin/gofarmhash"
 	"io"
 	"os"
 	"strconv"
@@ -36,6 +37,11 @@ func BuildIndexFromFile(csvFile string, indexer index_service.IIndexer, totalWor
 			break
 		}
 		if len(record) < 10 {
+			continue
+		}
+		docId := strings.TrimPrefix(record[0], "https://www.bilibili.com/video/")
+		// 当使用分布式模式时，每个worker只存储一部分视频数据
+		if totalWorkers > 0 && int(farmhash.Hash32WithSeed([]byte(docId), 0))%totalWorkers != workerIndex {
 			continue
 		}
 		video := &BiliVideo{

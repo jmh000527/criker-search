@@ -21,13 +21,14 @@ type IndexServiceWorker struct {
 	selfAddr string
 }
 
-// Init 初始化索引。若传入的etcdServers不为空，则需要创建hub，向注册中心注册自己；否则为单机模式
-func (w *IndexServiceWorker) Init(docNumEstimate int, dbType int, dataDir string, etcdServers []string, servicePort int) error {
+// Init 初始化索引
+func (w *IndexServiceWorker) Init(DocNumEstimate int, dbtype int, DataDir string) error {
 	w.Indexer = new(Indexer)
-	err := w.Indexer.Init(docNumEstimate, dbType, dataDir)
-	if err != nil {
-		panic(err)
-	}
+	return w.Indexer.Init(DocNumEstimate, dbtype, DataDir)
+}
+
+// RegisterService 若传入的etcdServers不为空，则需要创建hub，向注册中心注册自己；否则为单机模式
+func (w *IndexServiceWorker) RegisterService(etcdServers []string, servicePort int) error {
 	// 如果Init()传入的etcdServers不为空，需要创建hub，向注册中心注册自己
 	if len(etcdServers) > 0 {
 		if servicePort <= 1024 {

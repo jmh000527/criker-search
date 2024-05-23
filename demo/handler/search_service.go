@@ -98,8 +98,9 @@ func Search(ctx *gin.Context) {
 //	searcher := video_search.NewAllVideoSearcher()
 //	videos := searcher.Search(searchCtx)
 //
-//	ctx.JSON(http.StatusOK, videos) //把搜索结果以json形式返回给前端
+//	ctx.JSON(http.StatusOK, videos) // 把搜索结果以json形式返回给前端
 //}
+
 //
 //// SearchByAuthor up主在后台搜索自己的视频
 //func SearchByAuthor(ctx *gin.Context) {
