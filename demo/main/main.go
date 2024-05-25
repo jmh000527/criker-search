@@ -26,40 +26,50 @@ var (
 	etcdServers = []string{"127.0.0.1:2379"}                  // etcd集群的地址
 )
 
+// StartGin 启动 Gin Web 服务器
 func StartGin() {
+	// 创建默认的 Gin 引擎
 	engine := gin.Default()
+	// 设置 Gin 运行模式为 Release 模式
 	gin.SetMode(gin.ReleaseMode)
-
-	engine.Static("js", "demo/views/js")
-	engine.Static("css", "demo/views/css")
-	engine.Static("img", "demo/views/img")
-	engine.LoadHTMLFiles("demo/views/search.html", "demo/views/up_search.html") // 使用这些.html文件时就不需要加路径了
-
-	engine.Use(handler.GetUserInfo)                                                                // 全局中间件
-	classes := [...]string{"资讯", "社会", "热点", "生活", "知识", "环球", "游戏", "综合", "日常", "影视", "科技", "编程"} // 数组，非切片
+	// 设置静态文件路径
+	engine.Static("/js", "demo/views/js")
+	engine.Static("/css", "demo/views/css")
+	engine.Static("/img", "demo/views/img")
+	// 加载 HTML 文件
+	engine.LoadHTMLFiles("demo/views/search.html", "demo/views/up_search.html")
+	// 使用全局中间件
+	engine.Use(handler.GetUserInfo)
+	// 定义视频分类数组
+	classes := [...]string{
+		"资讯", "社会", "热点", "生活", "知识", "环球", "游戏", "综合", "日常", "影视", "科技", "编程",
+	}
+	// 设置路由和处理函数
 	engine.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "search.html", classes)
 	})
 	engine.GET("/up", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "up_search.html", classes)
 	})
-
-	//engine.POST("/search", handler.Search)
+	// 设置 POST 请求路由
 	engine.POST("/search", handler.SearchAll)
 	engine.POST("/up_search", handler.SearchByAuthor)
+	// 启动服务器，监听指定端口
 	engine.Run("127.0.0.1:" + strconv.Itoa(*port))
 }
 
+// main 程序入口函数
 func main() {
 	flag.Parse()
 
 	switch *mode {
 	case 1, 3:
-		// 1：单机模式，索引功能嵌套在web server内部。3：分布式模式，web server内持有一个哨兵，通过哨兵去访问各个grpc index server
+		// 1：单机模式，索引功能嵌套在 Web 服务器内部。
+		// 3：分布式模式，Web 服务器内持有一个哨兵，通过哨兵访问各个 gRPC Index 服务器。
 		WebServerMain(*mode)
 		StartGin()
 	case 2:
-		// 以grpc server的方式启动索引服务IndexWorker
+		// 2：以 gRPC 服务器的方式启动索引服务 IndexWorker
 		GrpcIndexerMain()
 	}
 }

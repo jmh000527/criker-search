@@ -6,8 +6,8 @@ import (
 	"criker-search/demo/video_search"
 	"criker-search/demo/video_search/common"
 	index_service "criker-search/index_service/interface"
+	"criker-search/utils"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -78,56 +78,65 @@ func cleanKeywords(words []string) []string {
 // SearchAll 搜索全站视频
 func SearchAll(ctx *gin.Context) {
 	var request demo.SearchRequest
-	if err := ctx.ShouldBindJSON(&request); err != nil {
-		log.Printf("bind request parameter failed: %s", err)
-		ctx.String(http.StatusBadRequest, "invalid json")
+	// 绑定请求参数
+	err := ctx.ShouldBindJSON(&request)
+	if err != nil {
+		utils.Log.Printf("bind request parameter failed: %s", err)
+		ctx.String(http.StatusBadRequest, "invalid request parameters")
 		return
 	}
-
+	// 清理和验证关键词
 	request.Keywords = cleanKeywords(request.Keywords)
 	if len(request.Keywords) == 0 && len(request.Author) == 0 {
-		ctx.String(http.StatusBadRequest, "关键词和作者不能同时为空")
+		ctx.String(http.StatusBadRequest, "keyword or author can't be empty both")
 		return
 	}
-
+	// 构建搜索上下文
 	searchCtx := &common.VideoSearchContext{
 		Ctx:     context.Background(),
 		Request: &request,
 		Indexer: Indexer,
 	}
+	// 执行搜索
 	searcher := video_search.NewAllVideoSearcher()
 	videos := searcher.Search(searchCtx)
-
-	ctx.JSON(http.StatusOK, videos) // 把搜索结果以json形式返回给前端
+	// 以 JSON 格式返回搜索结果
+	utils.Log.Printf("returning %d documents", len(videos))
+	ctx.JSON(http.StatusOK, videos)
 }
 
 // SearchByAuthor up主在后台搜索自己的视频
 func SearchByAuthor(ctx *gin.Context) {
 	var request demo.SearchRequest
-	if err := ctx.ShouldBindJSON(&request); err != nil {
-		log.Printf("bind request parameter failed: %s", err)
-		ctx.String(http.StatusBadRequest, "invalid json")
+	// 绑定请求参数
+	err := ctx.ShouldBindJSON(&request)
+	if err != nil {
+		utils.Log.Printf("bind request parameter failed: %s", err)
+		ctx.String(http.StatusBadRequest, "invalid request parameters")
 		return
 	}
-
+	// 清理和验证关键词
 	request.Keywords = cleanKeywords(request.Keywords)
 	if len(request.Keywords) == 0 {
-		ctx.String(http.StatusBadRequest, "关键词不能为空")
+		ctx.String(http.StatusBadRequest, "keyword can't be empty")
 		return
 	}
-
-	userName, ok := ctx.Value("user_name").(string) //从gin.Context里取得userName
+	// 从 gin.Context 中获取用户名
+	userName, ok := ctx.Value("user_name").(string)
 	if !ok || len(userName) == 0 {
-		ctx.String(http.StatusBadRequest, "获取不到登录用户名")
+		ctx.String(http.StatusBadRequest, "can not get user_name")
 		return
 	}
+	// 构建搜索上下文
 	searchCtx := &common.VideoSearchContext{
-		Ctx:     context.WithValue(context.Background(), common.UN("user_name"), userName), //把userName放到context里
+		Ctx:     context.WithValue(context.Background(), common.UN("user_name"), userName), // 将 userName 放到 context 里
 		Request: &request,
 		Indexer: Indexer,
 	}
+	// 执行搜索
 	searcher := video_search.NewUpVideoSearcher()
 	videos := searcher.Search(searchCtx)
-
-	ctx.JSON(http.StatusOK, videos) //把搜索结果以json形式返回给前端
+	// 以 JSON 格式返回搜索结果
+	utils.Log.Printf("returning %d documents", len(videos))
+	ctx.JSON(http.StatusOK, videos)
 }
