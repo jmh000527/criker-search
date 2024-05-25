@@ -15,12 +15,13 @@ func (ViewFilter) Apply(ctx *common.VideoSearchContext) {
 	if request == nil {
 		return
 	}
-	// 如果播放量范围不合法，则不进行过滤
-	if request.ViewFrom > 0 && request.ViewTo > 0 && request.ViewFrom >= request.ViewTo {
-		return
-	}
 	// 创建一个新的视频切片，用于存储过滤后的视频
 	videos := make([]*demo.BiliVideo, 0, len(ctx.Videos))
+	// 如果播放量范围不合法，则不进行过滤
+	if request.ViewFrom > 0 && request.ViewTo > 0 && request.ViewFrom >= request.ViewTo {
+		// 返回空切片
+		ctx.Videos = videos
+	}
 	// 遍历搜索结果中的每个视频
 	for _, video := range ctx.Videos {
 		// 如果视频的播放量小于搜索请求中指定的最小播放量，则跳过该视频
