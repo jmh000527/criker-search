@@ -56,45 +56,6 @@ func GrpcIndexerInit() {
 
 }
 
-//func GrpcIndexerInit() {
-//	// 监听本地端口
-//	listener, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(*port))
-//	if err != nil {
-//		panic(err)
-//	}
-//	server := grpc.NewServer()
-//	service = new(index_service.IndexServiceWorker)
-//	// 初始化索引
-//	err = service.Init(50000, dbType, *dbPath+"_part"+strconv.Itoa(*workerIndex))
-//	if err != nil {
-//		panic(err)
-//	}
-//	// 是否重建索引
-//	if *rebuildIndex {
-//		utils.Log.Printf("totalWorkers=%d, workerIndex=%d", *totalWorkers, *workerIndex)
-//		// 重建索引
-//		demo.BuildIndexFromFile(csvFile, service.Indexer, *totalWorkers, *workerIndex)
-//	} else {
-//		// 直接从正排索引文件里加载
-//		service.Indexer.LoadFromIndexFile()
-//	}
-//	// 注册服务的具体实现
-//	index_service.RegisterIndexServiceServer(server, service)
-//	// 启动服务
-//	utils.Log.Printf("start grpc server on port %d\n", *port)
-//	// 向注册中心注册自己，并周期性续命
-//	err = service.RegisterService(etcdServers, *port)
-//	if err != nil {
-//		panic(err)
-//	}
-//	// Serve会一直阻塞，所以放到一个协程里异步执行
-//	err = server.Serve(listener)
-//	if err != nil {
-//		service.Close()
-//		fmt.Printf("start grpc server on port %d failed, err: %s\n", *port, err)
-//	}
-//}
-
 // GrpcIndexerTeardown 处理服务终止信号
 func GrpcIndexerTeardown() {
 	sigCh := make(chan os.Signal, 1)

@@ -45,9 +45,9 @@ func StartGin() {
 		ctx.HTML(http.StatusOK, "up_search.html", classes)
 	})
 
-	engine.POST("/search", handler.Search)
-	//engine.POST("/search", handler.SearchAll)
-	//engine.POST("/up_search", handler.SearchByAuthor)
+	//engine.POST("/search", handler.Search)
+	engine.POST("/search", handler.SearchAll)
+	engine.POST("/up_search", handler.SearchByAuthor)
 	engine.Run("127.0.0.1:" + strconv.Itoa(*port))
 }
 
