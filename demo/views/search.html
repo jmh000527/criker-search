@@ -39,6 +39,18 @@
             font-size: 16px;
         }
 
+        .preloader-wrapper {
+            margin: 20% auto; /* Center the preloader */
+        }
+
+        /* Center the preloader */
+        .preloader-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+
         .category-label {
             border: none !important;
             background-color: transparent !important;
@@ -122,8 +134,19 @@
             headers: {
                 UserName: encodeURI("高性能golang") //写死UserName，实际中应该从浏览器的LocalStorage里取得用户的登录信息。包含中文时要进行encodeURI编码
             },
+            // beforeSend: function(request) {
+            //     $("#result").html("<img src='img/loading.gif' />"); //在后台返回success之前显示loading图标
+            // },
             beforeSend: function(request) {
-                $("#result").html("<img src='img/loading.gif' />"); //在后台返回success之前显示loading图标
+                $("#result").html('<div class="preloader-container"><div class="preloader-wrapper big active">' +
+                    '<div class="spinner-layer spinner-blue-only">' +
+                    '<div class="circle-clipper left">' +
+                    '<div class="circle"></div>' +
+                    '</div><div class="gap-patch">' +
+                    '<div class="circle"></div>' +
+                    '</div><div class="circle-clipper right">' +
+                    '<div class="circle"></div>' +
+                    '</div></div></div></div>'); // Show Materialize loading spinner
             },
             data: JSON.stringify(param),
             success: function(result) {
