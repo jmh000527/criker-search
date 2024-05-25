@@ -33,7 +33,6 @@ func StartGin() {
 	engine.Static("js", "demo/views/js")
 	engine.Static("css", "demo/views/css")
 	engine.Static("img", "demo/views/img")
-	engine.StaticFile("/favicon.ico", "img/dqq.png")                            // 在url中访问文件/favicon.ico，相当于访问文件系统中的views/img/dqq.png文件
 	engine.LoadHTMLFiles("demo/views/search.html", "demo/views/up_search.html") // 使用这些.html文件时就不需要加路径了
 
 	engine.Use(handler.GetUserInfo)                                                                // 全局中间件
