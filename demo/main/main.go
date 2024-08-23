@@ -2,7 +2,7 @@ package main
 
 import (
 	"criker-search/demo/handler"
-	_interface "criker-search/internal/interface"
+	"criker-search/index/kv_db"
 	"flag"
 	"net/http"
 	"strconv"
@@ -21,7 +21,7 @@ var (
 )
 
 var (
-	dbType      = _interface.BOLT                             // 正排索引使用哪种KV数据库
+	dbType      = kv_db.BOLT                                  // 正排索引使用哪种KV数据库
 	csvFile     = utils.RootPath + "demo/data/bili_video.csv" // 原始的数据文件，由它来创建索引
 	etcdServers = []string{"127.0.0.1:2379"}                  // etcd集群的地址
 )

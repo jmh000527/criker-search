@@ -1,8 +1,7 @@
 package test
 
 import (
-	_interface "criker-search/internal/interface"
-	"criker-search/internal/kv_db"
+	"criker-search/index/kv_db"
 	"criker-search/utils"
 	"testing"
 )
@@ -10,7 +9,7 @@ import (
 func TestBadger(t *testing.T) {
 	setup = func() {
 		var err error
-		db, err = kv_db.GetKvDB(_interface.BADGER, utils.RootPath+"data/badger_db")
+		db, err = kv_db.GetKvDB(kv_db.BADGER, utils.RootPath+"data/badger_db")
 		if err != nil {
 			panic(err)
 		}

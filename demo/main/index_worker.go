@@ -4,7 +4,6 @@ import (
 	"criker-search/demo"
 	"criker-search/index_service"
 	"criker-search/utils"
-	"fmt"
 	"google.golang.org/grpc"
 	"net"
 	"os"
@@ -15,11 +14,18 @@ import (
 
 var service *index_service.IndexServiceWorker // IndexWorker 是一个 gRPC 服务器
 
-// GrpcIndexerInit 初始化 gRPC 索引服务
+// GrpcIndexerInit 初始化 gRPC 索引服务。
+//
+// 功能描述:
+//   - 监听指定的本地端口，启动 gRPC 服务器。
+//   - 初始化索引服务，如果需要重建索引则从 CSV 文件重建索引，否则从正排索引文件加载索引。
+//   - 注册 gRPC 服务实现并启动服务。
+//   - 向服务注册中心注册服务并周期性续期。
 func GrpcIndexerInit() {
 	// 监听本地端口
 	listener, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(*port))
 	if err != nil {
+		utils.Log.Printf("监听端口失败: %v", err)
 		panic(err)
 	}
 	server := grpc.NewServer()
@@ -28,11 +34,12 @@ func GrpcIndexerInit() {
 	// 初始化索引
 	err = service.Init(50000, dbType, *dbPath+"_part"+strconv.Itoa(*workerIndex))
 	if err != nil {
+		utils.Log.Printf("初始化索引失败: %v", err)
 		panic(err)
 	}
 	// 是否重建索引
 	if *rebuildIndex {
-		utils.Log.Printf("totalWorkers=%d, workerIndex=%d", *totalWorkers, *workerIndex)
+		utils.Log.Printf("总工作节点数=%d, 当前工作节点索引=%d", *totalWorkers, *workerIndex)
 		// 重建索引
 		demo.BuildIndexFromFile(csvFile, service.Indexer, *totalWorkers, *workerIndex)
 	} else {
@@ -42,18 +49,19 @@ func GrpcIndexerInit() {
 	// 注册服务实现
 	index_service.RegisterIndexServiceServer(server, service)
 	// 启动服务
-	utils.Log.Printf("start grpc server on port %d\n", *port)
+	utils.Log.Printf("在端口 %d 启动 gRPC 服务器", *port)
 	// 向注册中心注册服务并周期性续期
 	err = service.RegisterService(etcdServers, *port)
 	if err != nil {
+		utils.Log.Printf("注册服务失败: %v", err)
 		panic(err)
 	}
+	// 启动服务
 	err = server.Serve(listener)
 	if err != nil {
 		service.Close()
-		fmt.Printf("start grpc server on port %d failed, err: %s\n", *port, err)
+		utils.Log.Printf("启动 gRPC 服务器失败，端口 %d，错误: %s", *port, err)
 	}
-
 }
 
 // GrpcIndexerTeardown 处理服务终止信号

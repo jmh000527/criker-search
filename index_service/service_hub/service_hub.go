@@ -1,4 +1,4 @@
-package index_service
+package service_hub
 
 import etcdv3 "go.etcd.io/etcd/client/v3"
 

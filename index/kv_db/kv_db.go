@@ -1,4 +1,4 @@
-package _interface
+package kv_db
 
 // 几种常见的基于LSM-tree算法实现的KV数据库
 const (

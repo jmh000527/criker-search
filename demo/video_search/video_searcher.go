@@ -12,29 +12,19 @@ import (
 	"time"
 )
 
-// Recaller 定义了视频搜索结果召回器的接口。
-type Recaller interface {
-	Recall(*common.VideoSearchContext) []*demo.BiliVideo
-}
-
-// Filter 定义了视频搜索结果过滤器的接口。
-type Filter interface {
-	Apply(*common.VideoSearchContext)
-}
-
 // VideoSearcher 是视频搜索器的模板方法，负责组织召回器和过滤器。
 type VideoSearcher struct {
-	Recallers []Recaller // 视频搜索结果召回器列表
-	Filters   []Filter   // 视频搜索结果过滤器列表
+	Recallers []recaller.Recaller // 视频搜索结果召回器列表
+	Filters   []filter.Filter     // 视频搜索结果过滤器列表
 }
 
 // WithRecallers 向视频搜索器添加一个或多个视频搜索结果召回器。
-func (vs *VideoSearcher) WithRecallers(recallers ...Recaller) {
+func (vs *VideoSearcher) WithRecallers(recallers ...recaller.Recaller) {
 	vs.Recallers = append(vs.Recallers, recallers...)
 }
 
 // WithFilters 向视频搜索器添加一个或多个视频搜索结果过滤器。
-func (vs *VideoSearcher) WithFilters(filters ...Filter) {
+func (vs *VideoSearcher) WithFilters(filters ...filter.Filter) {
 	vs.Filters = append(vs.Filters, filters...)
 }
 
@@ -51,13 +41,13 @@ func (vs *VideoSearcher) Recall(searchContext *common.VideoSearchContext) {
 	wg.Add(len(vs.Recallers))
 	// 并发执行每个召回器的召回任务
 	for _, r := range vs.Recallers {
-		go func(recaller Recaller) {
+		go func(recaller recaller.Recaller) {
 			defer wg.Done()
 			// 获取召回器的名称
-			rule := reflect.TypeOf(recaller).Name()
+			rule := reflect.TypeOf(recaller).Elem().Name()
 			// 调用召回器的 Recall 方法，获取召回结果
 			result := recaller.Recall(searchContext)
-			utils.Log.Printf("recall %d talents by %s", len(result), rule)
+			utils.Log.Printf("召回 %d 个文档，使用规则 %s", len(result), rule)
 			// 将召回的视频结果发送到通道中
 			for _, video := range result {
 				collection <- video
@@ -91,48 +81,36 @@ func (vs *VideoSearcher) Recall(searchContext *common.VideoSearchContext) {
 }
 
 // Filter 执行视频搜索结果过滤，调用各个过滤器的 Apply 方法，过滤搜索上下文中的视频。
+//
+// 参数:
+//   - searchContext: 包含搜索上下文信息的 VideoSearchContext 对象。该对象包含了召回的文档以及用于过滤的相关信息。
+//
+// 返回值:
+//   - 无。此方法会直接修改传入的 searchContext 对象，过滤掉不符合条件的视频。
 func (vs *VideoSearcher) Filter(searchContext *common.VideoSearchContext) {
 	for _, f := range vs.Filters {
 		f.Apply(searchContext)
 	}
 }
 
-// Search 超类定义了一个算法的框架，在子类中重写特定的算法步骤（即recall和filter这2步）
+// Search 执行视频搜索，包含召回和过滤两个步骤。
+//
+// 参数:
+//   - searchContext: 包含搜索上下文信息的VideoSearchContext对象。
+//
+// 返回值:
+//   - []*demo.BiliVideo: 经过召回和过滤后的BiliVideo对象切片。
 func (vs *VideoSearcher) Search(searchContext *common.VideoSearchContext) []*demo.BiliVideo {
 	t1 := time.Now()
-	// 召回
+	// 执行召回操作
 	vs.Recall(searchContext)
 	t2 := time.Now()
-	utils.Log.Printf("recall %d docs in %d ms", len(searchContext.Videos), t2.Sub(t1).Milliseconds())
-	// 过滤
+	utils.Log.Printf("召回 %d 个文档，用时 %d 毫秒", len(searchContext.Videos), t2.Sub(t1).Milliseconds())
+
+	// 执行过滤操作
 	vs.Filter(searchContext)
 	t3 := time.Now()
-	utils.Log.Printf("after filter remain %d docs in %d ms", len(searchContext.Videos), t2.Sub(t3).Milliseconds())
+	utils.Log.Printf("过滤后剩余 %d 个文档，用时 %d 毫秒", len(searchContext.Videos), t3.Sub(t2).Milliseconds())
+
 	return searchContext.Videos
-}
-
-// AllVideoSearcher 是全站视频搜索器，继承自 VideoSearcher。
-type AllVideoSearcher struct {
-	VideoSearcher
-}
-
-// NewAllVideoSearcher 创建一个新的全站视频搜索器。
-func NewAllVideoSearcher() *AllVideoSearcher {
-	searcher := &AllVideoSearcher{}
-	searcher.WithRecallers(&recaller.KeywordRecaller{})
-	searcher.WithFilters(&filter.ViewFilter{})
-	return searcher
-}
-
-// UpVideoSearcher 是 up 主视频搜索器，继承自 VideoSearcher。
-type UpVideoSearcher struct {
-	VideoSearcher
-}
-
-// NewUpVideoSearcher 创建一个新的 up 主视频搜索器。
-func NewUpVideoSearcher() *UpVideoSearcher {
-	searcher := &UpVideoSearcher{}
-	searcher.WithRecallers(&recaller.KeywordAuthorRecaller{})
-	searcher.WithFilters(&filter.ViewFilter{})
-	return searcher
 }

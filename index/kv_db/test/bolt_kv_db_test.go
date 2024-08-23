@@ -1,8 +1,7 @@
 package test
 
 import (
-	_interface "criker-search/internal/interface"
-	"criker-search/internal/kv_db"
+	"criker-search/index/kv_db"
 	"criker-search/utils"
 	"testing"
 )
@@ -10,7 +9,7 @@ import (
 func TestBolt(t *testing.T) {
 	setup = func() {
 		var err error
-		db, err = kv_db.GetKvDB(_interface.BOLT, utils.RootPath+"data/bolt_db") //使用工厂模式
+		db, err = kv_db.GetKvDB(kv_db.BOLT, utils.RootPath+"data/bolt_db") //使用工厂模式
 		if err != nil {
 			panic(err)
 		}

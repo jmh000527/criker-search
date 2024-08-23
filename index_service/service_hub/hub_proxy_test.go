@@ -1,7 +1,6 @@
-package test
+package service_hub
 
 import (
-	"criker-search/index_service"
 	"fmt"
 	"testing"
 	"time"
@@ -14,7 +13,7 @@ var (
 
 func TestGetServiceEndpointsByProxy(t *testing.T) {
 	const qps = 10 // qps限制为10
-	p := index_service.GetServiceHubProxy(etcdServers, 3, qps)
+	p := GetServiceHubProxy(etcdServers, 3, qps)
 
 	endpoint := "127.0.0.1:5000"
 	p.RegisterService(serviceName, endpoint, 0)
