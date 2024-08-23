@@ -1,13 +1,13 @@
 package main
 
 import (
-	"criker-search/index_service"
+	"github.com/jmh000527/criker-search/index_service"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"criker-search/demo"
-	"criker-search/demo/handler"
+	"github.com/jmh000527/criker-search/demo"
+	"github.com/jmh000527/criker-search/demo/handler"
 )
 
 // WebServerInit 初始化 Web 服务器，根据传入的模式选择不同的索引初始化方式

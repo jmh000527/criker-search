@@ -2,10 +2,10 @@ package index_service
 
 import (
 	"context"
-	"criker-search/index_service/service_hub"
-	"criker-search/types"
-	"criker-search/utils"
 	"fmt"
+	"github.com/jmh000527/criker-search/index_service/service_hub"
+	"github.com/jmh000527/criker-search/types"
+	"github.com/jmh000527/criker-search/utils"
 	"strconv"
 	"time"
 )

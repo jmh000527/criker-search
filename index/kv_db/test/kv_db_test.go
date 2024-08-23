@@ -1,9 +1,9 @@
 package test
 
 import (
-	_interface "criker-search/index/kv_db"
 	"errors"
 	"fmt"
+	_interface "github.com/jmh000527/criker-search/index/kv_db"
 	"testing"
 )
 

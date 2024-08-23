@@ -1,8 +1,8 @@
 package test
 
 import (
-	"criker-search/index/kv_db"
-	"criker-search/utils"
+	"github.com/jmh000527/criker-search/index/kv_db"
+	"github.com/jmh000527/criker-search/utils"
 	"testing"
 )
 

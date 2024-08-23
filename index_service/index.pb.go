@@ -5,9 +5,9 @@ package index_service
 
 import (
 	context "context"
-	types "criker-search/types"
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/jmh000527/criker-search/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

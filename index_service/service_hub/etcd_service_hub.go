@@ -2,9 +2,9 @@ package service_hub
 
 import (
 	"context"
-	"criker-search/index_service/load_balancer"
-	"criker-search/utils"
 	"errors"
+	"github.com/jmh000527/criker-search/index_service/load_balancer"
+	"github.com/jmh000527/criker-search/utils"
 	"go.etcd.io/etcd/api/v3/v3rpc/rpctypes"
 	etcdv3 "go.etcd.io/etcd/client/v3"
 	"strings"

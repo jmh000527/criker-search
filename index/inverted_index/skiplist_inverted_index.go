@@ -1,9 +1,9 @@
 package inverted_index
 
 import (
-	"criker-search/types"
-	"criker-search/utils/concurrent_hash_map"
 	"github.com/huandu/skiplist"
+	"github.com/jmh000527/criker-search/types"
+	"github.com/jmh000527/criker-search/utils/concurrent_hash_map"
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"runtime"
 	"sync"

@@ -2,8 +2,8 @@ package common
 
 import (
 	"context"
-	"criker-search/demo"
-	indexer "criker-search/index_service"
+	"github.com/jmh000527/criker-search/demo"
+	indexer "github.com/jmh000527/criker-search/index_service"
 )
 
 // VideoSearchContext 视频搜索的上下文。

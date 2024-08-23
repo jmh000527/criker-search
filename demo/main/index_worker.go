@@ -1,9 +1,9 @@
 package main
 
 import (
-	"criker-search/demo"
-	"criker-search/index_service"
-	"criker-search/utils"
+	"github.com/jmh000527/criker-search/demo"
+	"github.com/jmh000527/criker-search/index_service"
+	"github.com/jmh000527/criker-search/utils"
 	"google.golang.org/grpc"
 	"net"
 	"os"

@@ -1,7 +1,7 @@
 package inverted_index
 
 import (
-	"criker-search/types"
+	"github.com/jmh000527/criker-search/types"
 )
 
 // InvertedIndexer 定义了倒排索引器的接口，提供添加文档、删除文档以及根据查询条件搜索文档的功能。

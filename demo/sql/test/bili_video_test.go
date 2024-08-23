@@ -1,9 +1,9 @@
 package sql
 
 import (
-	"criker-search/demo/sql"
-	"criker-search/utils"
 	"fmt"
+	"github.com/jmh000527/criker-search/demo/sql"
+	"github.com/jmh000527/criker-search/utils"
 	"testing"
 )
 

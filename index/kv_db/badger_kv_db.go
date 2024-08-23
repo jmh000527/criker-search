@@ -1,9 +1,9 @@
 package kv_db
 
 import (
-	"criker-search/utils"
 	"errors"
 	"github.com/dgraph-io/badger/v4"
+	"github.com/jmh000527/criker-search/utils"
 	"os"
 	"path"
 	"sync/atomic"

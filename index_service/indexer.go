@@ -1,6 +1,6 @@
 package index_service
 
-import "criker-search/types"
+import "github.com/jmh000527/criker-search/types"
 
 // Indexer Sentinel（分布式grpc的哨兵）和Indexer（单机索引）都实现了该接口
 type Indexer interface {

@@ -1,8 +1,8 @@
 package filter
 
 import (
-	"criker-search/demo"
-	"criker-search/demo/video_search/common"
+	"github.com/jmh000527/criker-search/demo"
+	"github.com/jmh000527/criker-search/demo/video_search/common"
 )
 
 // ViewFilter 按照播放量进行过滤。

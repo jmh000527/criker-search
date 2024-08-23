@@ -1,14 +1,14 @@
 package main
 
 import (
-	"criker-search/demo/handler"
-	"criker-search/index/kv_db"
 	"flag"
+	"github.com/jmh000527/criker-search/demo/handler"
+	"github.com/jmh000527/criker-search/index/kv_db"
 	"net/http"
 	"strconv"
 
-	"criker-search/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/jmh000527/criker-search/utils"
 )
 
 var (

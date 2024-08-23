@@ -2,12 +2,12 @@ package index_service
 
 import (
 	"bytes"
-	invertedIndex "criker-search/index/inverted_index"
-	kvDb "criker-search/index/kv_db"
-	"criker-search/types"
-	"criker-search/utils"
 	"encoding/gob"
 	"fmt"
+	invertedIndex "github.com/jmh000527/criker-search/index/inverted_index"
+	kvDb "github.com/jmh000527/criker-search/index/kv_db"
+	"github.com/jmh000527/criker-search/types"
+	"github.com/jmh000527/criker-search/utils"
 	"strings"
 	"sync/atomic"
 )

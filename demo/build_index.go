@@ -1,11 +1,11 @@
 package demo
 
 import (
-	indexer "criker-search/index_service"
-	"criker-search/types"
-	"criker-search/utils"
 	"encoding/csv"
 	"github.com/gogo/protobuf/proto"
+	indexer "github.com/jmh000527/criker-search/index_service"
+	"github.com/jmh000527/criker-search/types"
+	"github.com/jmh000527/criker-search/utils"
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"io"
 	"os"

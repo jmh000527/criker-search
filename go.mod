@@ -1,4 +1,4 @@
-module criker-search
+module github.com/jmh000527/criker-search
 
 go 1.20
 

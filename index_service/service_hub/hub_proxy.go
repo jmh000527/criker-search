@@ -2,7 +2,7 @@ package service_hub
 
 import (
 	"context"
-	"criker-search/utils"
+	"github.com/jmh000527/criker-search/utils"
 	etcdv3 "go.etcd.io/etcd/client/v3"
 	"golang.org/x/time/rate"
 	"strings"

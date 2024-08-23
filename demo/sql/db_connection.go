@@ -1,8 +1,8 @@
 package sql
 
 import (
-	"criker-search/utils"
 	"fmt"
+	"github.com/jmh000527/criker-search/utils"
 	"log"
 	"os"
 	"sync"

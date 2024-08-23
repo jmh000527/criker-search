@@ -1,11 +1,11 @@
 package video_search
 
 import (
-	"criker-search/demo"
-	"criker-search/demo/video_search/common"
-	"criker-search/demo/video_search/filter"
-	"criker-search/demo/video_search/recaller"
-	"criker-search/utils"
+	"github.com/jmh000527/criker-search/demo"
+	"github.com/jmh000527/criker-search/demo/video_search/common"
+	"github.com/jmh000527/criker-search/demo/video_search/filter"
+	"github.com/jmh000527/criker-search/demo/video_search/recaller"
+	"github.com/jmh000527/criker-search/utils"
 	"golang.org/x/exp/maps"
 	"reflect"
 	"sync"

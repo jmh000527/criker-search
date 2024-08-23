@@ -2,12 +2,12 @@ package handler
 
 import (
 	"context"
-	"criker-search/demo"
-	"criker-search/demo/video_search"
-	"criker-search/demo/video_search/common"
-	indexer "criker-search/index_service"
-	"criker-search/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/jmh000527/criker-search/demo"
+	"github.com/jmh000527/criker-search/demo/video_search"
+	"github.com/jmh000527/criker-search/demo/video_search/common"
+	indexer "github.com/jmh000527/criker-search/index_service"
+	"github.com/jmh000527/criker-search/utils"
 	"net/http"
 	"strings"
 )
