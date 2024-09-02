@@ -16,9 +16,9 @@ import (
 // 这个结构体提供了一个统一的接口来操作这两个子系统，从而简化了索引操作的复杂性。
 //
 // 字段:
-//   - forwardIndex: 正排索引的数据库实例，类型为 _interface.KeyValueDB。
+//   - forwardIndex: 正排索引的数据库实例，类型为 kvDb.KeyValueDB。
 //     这个数据库用于存储和检索文档的原始数据。
-//   - reverseIndex: 倒排索引的实例，类型为 _interface.InvertedIndexer。
+//   - reverseIndex: 倒排索引的实例，类型为 invertedIndex.InvertedIndexer。
 //     这个索引用于实现关键词到文档ID的映射，支持高效的文档检索。
 //   - maxIntId: 当前最大文档ID，类型为 uint64。
 //     这个值用于跟踪已分配的最大文档ID，以便生成新的唯一ID。
